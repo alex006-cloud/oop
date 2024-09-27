@@ -1,0 +1,22 @@
+class Phone {
+private:
+    std::string make;
+    std::string model;
+    std::string os;
+    int batteryCapacity;
+
+public:
+    // Constructor
+    Phone(std::string make, std::string model, std::string os, int batteryCapacity)
+        : make(make), model(model), os(os), batteryCapacity(batteryCapacity) {}
+
+    // Destructor
+    ~Phone() {
+        std::cout << "Phone has been turned off." << std::endl;
+    }
+
+    // Method to display battery info
+    void displayBatteryInfo() const {
+        std::cout << "Phone " << make << " " << model << " has " << batteryCapacity << "% battery left." << std::endl;
+    }
+};

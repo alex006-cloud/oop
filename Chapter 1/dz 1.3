@@ -1,0 +1,26 @@
+#include <iostream>
+#include <cstring>
+
+class Computer {
+private:
+    std::string manufacturer;
+    std::string processor;
+    int ramSize;
+    int hddSize;
+    int usedHddSpace;
+
+public:
+    // Constructor
+    Computer(std::string manufacturer, std::string processor, int ramSize, int hddSize)
+        : manufacturer(manufacturer), processor(processor), ramSize(ramSize), hddSize(hddSize), usedHddSpace(0) {}
+
+    // Destructor
+    ~Computer() {
+        std::cout << "Computer has been shut down." << std::endl;
+    }
+
+    // Method to check if there's free disk space
+    bool hasFreeDiskSpace() const {
+        return hddSize > usedHddSpace;
+    }
+};

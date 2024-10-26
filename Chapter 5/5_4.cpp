@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <ctime>
+#include <cstdlib>
 
 template <typename T>
 class Matrix {
@@ -17,7 +19,7 @@ public:
     void input() {
         for (size_t i = 0; i < rows; ++i) {
             for (size_t j = 0; j < cols; ++j) {
-                std::cin >> data[i][j];
+                data[i][j]  =  std::rand() % 11;
             }
         }
     }
@@ -82,22 +84,12 @@ public:
 };
 
 int main() {
-    int a, a2, b, b2;
-    
+    srand(static_cast<unsigned int>(time(0)));
 
-    std::cout << "Введите размеры матрицы A:" << std::endl;
-    std::cin >> a >> a2;
+    Matrix<double> A(2, 3);
+    Matrix<double> B(2, 3);
 
-    std::cout << "Введите размеры матрицы B:" << std::endl;
-    std::cin >> b >> b2;
-
-    Matrix<int> A(a, a2);
-    Matrix<int> B(b, b2);
-
-    std::cout << "Введите элементы матрицы A:" << std::endl;
     A.input();
-
-    std::cout << "Введите элементы матрицы B:" << std::endl;
     B.input();
 
     std::cout << "Матрица A:" << std::endl;
@@ -106,7 +98,7 @@ int main() {
     std::cout << "Матрица B:" << std::endl;
     B.output();
 
-    Matrix<int> C = A + B;
+    Matrix<double> C = A + B;
     std::cout << "Матрица A + B:" << std::endl;
     C.output();
 
@@ -114,14 +106,13 @@ int main() {
     std::cout << "Матрица A - B:" << std::endl;
     C.output();
 
-    Matrix<int> D(3, 2);
-    std::cout << "Введите элементы матрицы D:" << std::endl;
+    Matrix<double> D(3, 2);
     D.input();
 
     std::cout << "Матрица D:" << std::endl;
     D.output();
 
-    Matrix<int> E = A * D;
+    Matrix<double> E = A * D;
     std::cout << "Матрица A * D:" << std::endl;
     E.output();
 

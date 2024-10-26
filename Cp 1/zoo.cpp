@@ -7,7 +7,8 @@
 // Интерфейс для кормления животных
 class IFeedable {
 public:
-    virtual void Feed() const = 0;
+    virtual void Feed() = 0;
+    virtual bool IsFed() const = 0;
 };
 
 // Определение шаблонного класса Animal
@@ -17,26 +18,50 @@ protected:
     std::string name;
     int age;
     T weight;
+    bool isFed;
+    static int nextId;
+    int id;
 
 public:
     Animal(const std::string &name, int age, T weight)
-        : name(name), age(age), weight(weight) {}
+        : name(name), age(age), weight(weight), isFed(false), id(nextId++) {}
 
     virtual void MakeSound() const = 0;
     virtual void DisplayInfo() const {
-        std::cout << "Name: " << name << ", Age: " << age << ", Weight: " << weight << std::endl;
+        if (isFed == true){
+            std::cout << "Name: " << name << ", Age: " << age << ", Weight: " << weight << " , Status: is being fed" << " , Index: " << id << std::endl;
+        }else{
+            std::cout << "Name: " << name << ", Age: " << age << ", Weight: " << weight << " , Status: isn't being fed" << " , Index: " << id << std::endl;
+        }
+        
     }
 
-    void Feed() const override {
+    virtual void Feed() override {
         std::cout << name << " is being fed." << std::endl;
+        isFed = true;
     }
+
+    virtual bool IsFed() const override{
+        return isFed;
+    }
+
+    int GetId() const {
+        return id;
+    }
+
+    std::string GetName() const {
+        return name;
+    }
+
 };
+template <typename T>
+int Animal<T>::nextId = 1;
 
 // Производный класс Mammal
 template <typename T>
 class Mammal : public Animal<T> {
 public:
-    Mammal(const std::string &name, int age, T weight)
+    Mammal(const std::string &name, int age, T weight )
         : Animal<T>(name, age, weight) {}
 
     void MakeSound() const override {
@@ -104,8 +129,26 @@ public:
 
     void FeedAllAnimals() const {
         for (const auto &animal : animals) {
-            animal->Feed();
+            if (!animal->IsFed()){
+                animal->Feed();
+            }else{
+                std::cout << "Animal " << animal->GetName() << " with Id: " << animal->GetId() << " is already fed." << std::endl;
+            }
         }
+    }
+
+    void FeedConrect(int id) const{
+        for (const auto& animal : animals) {
+            if(animal->GetId() == id){
+                if (!animal->IsFed()){
+                    animal->Feed();
+                }else{
+                    std::cout << "Animal " << animal->GetName() << " with Id: " << id << " is already fed." << std::endl;
+                }
+                return;
+            }
+        }
+        std::cout << "Animal with Id: " << id << " not found." << std::endl;
     }
 
     ~Zoo() {
@@ -145,8 +188,14 @@ int main() {
     std::cout << "\nAnimals making sounds:" << std::endl;
     zoo.MakeSounds();
 
+    std::cout << "\nFeeding animals with ID 3:" << std::endl;
+    zoo.FeedConrect(3);
+
     std::cout << "\nFeeding animals:" << std::endl;
     zoo.FeedAllAnimals();
+
+    std::cout << "\nAnimals after feeding:" << std::endl;
+    zoo.DisplayAllAnimals();
 
     return 0;
 }

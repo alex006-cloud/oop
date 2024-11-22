@@ -41,7 +41,7 @@ public:
 };
 
 int main() {
-    Date date(25, 2, 2024);
+    Date date(31, 12, 2024);
     Date newDate = date + 10;
     newDate.display();
     return 0;
